@@ -1,4 +1,4 @@
-﻿using Luban;
+using Luban;
 using Luban.SimpleJSON;
 {{
     parent_def_type = __bean.parent_def_type
@@ -64,6 +64,7 @@ func generate_resolve_field_ref
 end
 ~}}
 {{~if __bean.is_value_type~}}
+[System.Serializable]
 public partial struct {{__name}}
 {{~else~}}
 public {{class_modifier __bean}} partial class {{__name}} : {{if parent_def_type}}{{__bean.parent}}{{else}}Luban.BeanBase{{end}}
@@ -85,6 +86,7 @@ public {{class_modifier __bean}} partial class {{__name}} : {{if parent_def_type
         }
             {{~end~}}
         {{~end~}}
+        OnConstruction();
     }
 
     public static {{__name}} Deserialize{{__name}}(JSONNode _buf)
@@ -147,5 +149,6 @@ public {{class_modifier __bean}} partial class {{__name}} : {{if parent_def_type
     {{~end~}}
         + "}";
     }
+    partial void OnConstruction();
 }
 {{namespace_with_grace_end __namespace_with_top_module}}
